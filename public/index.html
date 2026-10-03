@@ -1,45 +1,91 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Server Center</title>
-  <link rel="stylesheet" href="/styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Server Center</title>
+<link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  <aside class="sidebar">
-    <div class="brand"><span class="brand-mark">S</span><div><b>Server Center</b><small>Administration</small></div></div>
-    <nav>
-      <button class="nav active" data-page="overview">Overview</button>
-      <button class="nav" data-page="system">System</button>
-      <button class="nav" data-page="services">Services</button>
-      <button class="nav" data-page="processes">Processes</button>
-      <button class="nav" data-page="terminal">Terminal</button>
-    </nav>
-    <div class="connection"><span class="dot"></span><div><b id="connection">Connecting…</b><small id="host">—</small></div></div>
-  </aside>
+<aside class="sidebar">
+  <div class="brand"><div class="logo">S</div><div><strong>Server Center</strong><span>Hosting Control Panel</span></div></div>
+  <div class="server-selector"><span class="status-dot"></span><div><b>Local Host</b><small id="hostname">Loading…</small></div><span class="chevron">⌄</span></div>
+  <nav>
+    <button class="nav active" data-page="dashboard"><span>⌂</span> Dashboard</button>
+    <button class="nav" data-page="servers"><span>▣</span> Servers <em id="server-count">0</em></button>
+    <button class="nav" data-page="websites"><span>◎</span> Websites <em id="website-count">0</em></button>
+    <button class="nav" data-page="databases"><span>◈</span> Databases <em id="database-count">0</em></button>
+    <button class="nav" data-page="activity"><span>≡</span> Activity</button>
+  </nav>
+  <div class="sidebar-bottom"><div class="host-state"><span class="status-dot"></span><div><b>Host online</b><small>Local management</small></div></div><button class="settings" data-page="settings">⚙ Settings</button></div>
+</aside>
 
-  <main>
-    <header><div><p class="eyebrow">SERVER MANAGEMENT</p><h1 id="page-title">Overview</h1></div><button class="refresh" id="refresh">↻ Refresh</button></header>
+<main>
+<header>
+  <div><span class="eyebrow">LOCAL HOSTING</span><h1 id="page-title">Dashboard</h1></div>
+  <div class="header-actions"><span class="demo-badge">LOCAL MODE</span><button class="icon-btn" id="refresh">↻</button></div>
+</header>
 
-    <section id="overview" class="page active">
-      <div class="hero"><div><span class="badge">LIVE AGENT</span><h2 id="welcome">Server status</h2><p>Monitor and manage your Windows host from one place.</p></div><div class="hero-icon">▣</div></div>
-      <div class="stats">
-        <article><span>CPU</span><strong id="cpu">—</strong><small id="cpu-model">—</small></article>
-        <article><span>MEMORY</span><strong id="memory">—</strong><small id="memory-detail">—</small></article>
-        <article><span>STORAGE</span><strong id="storage">—</strong><small id="storage-detail">—</small></article>
-        <article><span>UPTIME</span><strong id="uptime">—</strong><small>System uptime</small></article>
-      </div>
-      <div class="grid two"><article class="panel"><div class="panel-head"><h3>Disks</h3><span id="disk-count">0</span></div><div id="disks"></div></article><article class="panel"><div class="panel-head"><h3>System information</h3></div><div id="system-info" class="kv"></div></article></div>
-    </section>
+<section id="dashboard" class="page active">
+  <div class="welcome">
+    <div><span class="eyebrow">SERVER CENTER</span><h2>Your infrastructure at a glance.</h2><p>Create and manage virtual hosting instances from this machine.</p></div>
+    <button class="primary" data-open="server-modal">+ Create server</button>
+  </div>
+  <div class="metrics">
+    <article><span>HOST CPU</span><strong id="cpu">—</strong><small id="cpu-detail">—</small></article>
+    <article><span>MEMORY</span><strong id="ram">—</strong><small id="ram-detail">—</small></article>
+    <article><span>STORAGE</span><strong id="storage">—</strong><small id="storage-detail">—</small></article>
+    <article><span>INSTANCES</span><strong id="instances">—</strong><small id="instances-detail">—</small></article>
+  </div>
+  <div class="section-title"><h3>Running servers</h3><button class="text-btn" data-page="servers">View all →</button></div>
+  <div class="server-grid" id="dashboard-servers"></div>
+  <div class="two-col">
+    <div class="panel"><div class="panel-head"><h3>Websites</h3><button class="text-btn" data-page="websites">Manage →</button></div><div id="dashboard-websites"></div></div>
+    <div class="panel"><div class="panel-head"><h3>Recent activity</h3><button class="text-btn" data-page="activity">View all →</button></div><div id="dashboard-activity"></div></div>
+  </div>
+</section>
 
-    <section id="system" class="page"><div class="panel"><div class="panel-head"><h3>System details</h3></div><div id="system-detail" class="kv large"></div></div></section>
-    <section id="services" class="page"><div class="panel"><div class="panel-head"><h3>Windows Services</h3><input id="service-search" placeholder="Search services…"></div><div id="services-table"></div></div></section>
-    <section id="processes" class="page"><div class="panel"><div class="panel-head"><h3>Processes</h3><input id="process-search" placeholder="Search processes…"></div><div id="processes-table"></div></div></section>
-    <section id="terminal" class="page"><div class="terminal"><div class="terminal-top"><span>PowerShell</span><span>Local session</span></div><pre id="terminal-output">Server Center terminal
-Read-only demo console. Administrative actions are exposed through the UI.</pre><div class="terminal-input"><span>PS&gt;</span><input id="terminal-command" placeholder="Try: systeminfo"><button id="terminal-run">Run</button></div></div></section>
-  </main>
-  <div id="toast"></div>
-  <script src="/app.js"></script>
+<section id="servers" class="page">
+  <div class="page-top"><div><h2>Servers</h2><p>Virtual instances managed by this host.</p></div><button class="primary" data-open="server-modal">+ Create server</button></div>
+  <div class="server-grid large" id="servers-list"></div>
+</section>
+
+<section id="websites" class="page">
+  <div class="page-top"><div><h2>Websites</h2><p>Domains and deployments hosted on your instances.</p></div><button class="primary" data-open="website-modal">+ Deploy website</button></div>
+  <div class="panel table-panel"><table><thead><tr><th>WEBSITE</th><th>SERVER</th><th>TYPE</th><th>STATUS</th><th></th></tr></thead><tbody id="websites-list"></tbody></table></div>
+</section>
+
+<section id="databases" class="page">
+  <div class="page-top"><div><h2>Databases</h2><p>Local databases attached to your infrastructure.</p></div><button class="primary" data-open="database-modal">+ Create database</button></div>
+  <div class="panel table-panel"><table><thead><tr><th>DATABASE</th><th>ENGINE</th><th>SIZE</th><th>STATUS</th></tr></thead><tbody id="databases-list"></tbody></table></div>
+</section>
+
+<section id="activity" class="page">
+  <div class="page-top"><div><h2>Activity</h2><p>Everything that happened inside the control panel.</p></div></div>
+  <div class="panel activity-list" id="activity-list"></div>
+</section>
+
+<section id="settings" class="page">
+  <div class="page-top"><div><h2>Settings</h2><p>Configuration for this local control panel.</p></div></div>
+  <div class="panel settings-panel">
+    <div class="setting"><div><b>Control panel</b><small>Server Center local instance</small></div><span class="tag">v2.0</span></div>
+    <div class="setting"><div><b>Host</b><small id="settings-host">—</small></div><span class="tag online">ONLINE</span></div>
+    <div class="setting"><div><b>API endpoint</b><small>http://127.0.0.1:3000/api</small></div><span class="tag">LOCAL</span></div>
+    <div class="setting"><div><b>Storage</b><small>Data is persisted locally in <code>data/panel.json</code></small></div><span class="tag">JSON</span></div>
+  </div>
+</section>
+</main>
+
+<div class="modal" id="server-modal"><div class="modal-card"><button class="close" data-close>×</button><span class="eyebrow">NEW INSTANCE</span><h2>Create server</h2><p class="modal-sub">Configure a virtual hosting instance.</p>
+<form id="server-form"><label>Name<input name="name" placeholder="My website" required></label><div class="form-grid"><label>Runtime<select name="type"><option>Node.js</option><option>Static</option><option>PHP</option><option>Python</option></select></label><label>Port<input name="port" type="number" value="3002" min="1024"></label></div><div class="form-grid"><label>RAM (MB)<input name="ram" type="number" value="1024"></label><label>CPU cores<input name="cpu" type="number" value="1" min="1"></label></div><div class="form-grid"><label>Storage (GB)<input name="storage" type="number" value="10"></label><label>Domain<input name="domain" value="site.local"></label></div><button class="primary full">Create instance</button></form></div></div>
+
+<div class="modal" id="website-modal"><div class="modal-card"><button class="close" data-close>×</button><span class="eyebrow">DEPLOYMENT</span><h2>Deploy website</h2><p class="modal-sub">Attach a domain to one of your servers.</p>
+<form id="website-form"><label>Website name<input name="name" placeholder="My website" required></label><label>Domain<input name="domain" placeholder="example.local" required></label><label>Server<select name="serverId" id="website-server" required></select></label><button class="primary full">Deploy website</button></form></div></div>
+
+<div class="modal" id="database-modal"><div class="modal-card"><button class="close" data-close>×</button><span class="eyebrow">DATABASE</span><h2>Create database</h2><p class="modal-sub">Provision a local database entry.</p>
+<form id="database-form"><label>Name<input name="name" placeholder="my_database" required></label><label>Engine<select name="engine"><option>SQLite</option><option>PostgreSQL</option><option>MySQL</option></select></label><button class="primary full">Create database</button></form></div></div>
+
+<div class="toast" id="toast"></div>
+<script src="/app.js"></script>
 </body>
 </html>
