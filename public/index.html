@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Server Center</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-mark">S</span><div><b>Server Center</b><small>Administration</small></div></div>
+    <nav>
+      <button class="nav active" data-page="overview">Overview</button>
+      <button class="nav" data-page="system">System</button>
+      <button class="nav" data-page="services">Services</button>
+      <button class="nav" data-page="processes">Processes</button>
+      <button class="nav" data-page="terminal">Terminal</button>
+    </nav>
+    <div class="connection"><span class="dot"></span><div><b id="connection">Connecting…</b><small id="host">—</small></div></div>
+  </aside>
+
+  <main>
+    <header><div><p class="eyebrow">SERVER MANAGEMENT</p><h1 id="page-title">Overview</h1></div><button class="refresh" id="refresh">↻ Refresh</button></header>
+
+    <section id="overview" class="page active">
+      <div class="hero"><div><span class="badge">LIVE AGENT</span><h2 id="welcome">Server status</h2><p>Monitor and manage your Windows host from one place.</p></div><div class="hero-icon">▣</div></div>
+      <div class="stats">
+        <article><span>CPU</span><strong id="cpu">—</strong><small id="cpu-model">—</small></article>
+        <article><span>MEMORY</span><strong id="memory">—</strong><small id="memory-detail">—</small></article>
+        <article><span>STORAGE</span><strong id="storage">—</strong><small id="storage-detail">—</small></article>
+        <article><span>UPTIME</span><strong id="uptime">—</strong><small>System uptime</small></article>
+      </div>
+      <div class="grid two"><article class="panel"><div class="panel-head"><h3>Disks</h3><span id="disk-count">0</span></div><div id="disks"></div></article><article class="panel"><div class="panel-head"><h3>System information</h3></div><div id="system-info" class="kv"></div></article></div>
+    </section>
+
+    <section id="system" class="page"><div class="panel"><div class="panel-head"><h3>System details</h3></div><div id="system-detail" class="kv large"></div></div></section>
+    <section id="services" class="page"><div class="panel"><div class="panel-head"><h3>Windows Services</h3><input id="service-search" placeholder="Search services…"></div><div id="services-table"></div></div></section>
+    <section id="processes" class="page"><div class="panel"><div class="panel-head"><h3>Processes</h3><input id="process-search" placeholder="Search processes…"></div><div id="processes-table"></div></div></section>
+    <section id="terminal" class="page"><div class="terminal"><div class="terminal-top"><span>PowerShell</span><span>Local session</span></div><pre id="terminal-output">Server Center terminal
+Read-only demo console. Administrative actions are exposed through the UI.</pre><div class="terminal-input"><span>PS&gt;</span><input id="terminal-command" placeholder="Try: systeminfo"><button id="terminal-run">Run</button></div></div></section>
+  </main>
+  <div id="toast"></div>
+  <script src="/app.js"></script>
+</body>
+</html>
